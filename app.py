@@ -53,6 +53,8 @@ def new_cupcake():
 
 @app.patch('/api/cupcakes/<int:cupcake_id>')
 def update_cupcake(cupcake_id):
+    """Updates cupcake in db and
+    returns JSON {"cupcake": {id, flavor, size, ...}}"""
     cupcake = Cupcake.query.get_or_404(cupcake_id)
 
     cupcake.flavor = request.json['flavor'] or cupcake.flavor
@@ -67,11 +69,13 @@ def update_cupcake(cupcake_id):
 
 @app.delete('/api/cupcakes/<cupcake_id>')
 def delete_cupcake(cupcake_id):
+    """Deletes cupcake in db and
+    returns JSON {"deleted": cupcake_id}"""
     cupcake = Cupcake.query.get_or_404(cupcake_id)
 
     db.session.delete(cupcake)
     db.session.commit()
 
     flash(f'{cupcake.flavor} successfully deleted')
-    return {'deleted': [cupcake_id]}
+    return jsonify({'deleted': cupcake_id})
 
