@@ -1,14 +1,15 @@
-"""Models for Cupcake app."""
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+"""Models for Cupcake app."""
 class Cupcake(db.Model):
     '''Cupcake model'''
 
     __tablename__ = 'cupcakes'
 
     def serialize(self):
+        """Serialize to dictionary."""
         return {
             'id': self.id,
             'flavor': self.flavor,
