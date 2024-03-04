@@ -1,7 +1,7 @@
 """Flask app for Cupcakes"""
 import os
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, flash
 # from flask_debugtoolbar import DebugToolbarExtension
 
 from models import connect_db, Cupcake, db
@@ -50,3 +50,28 @@ def new_cupcake():
     serialized = cupcake.serialize()
 
     return (jsonify(cupcake=serialized), 201)
+
+@app.patch('/api/cupcakes/<int:cupcake_id>')
+def update_cupcake(cupcake_id):
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+
+    cupcake.flavor = request.json['flavor'] or cupcake.flavor
+    cupcake.size = request.json['size'] or cupcake.size
+    cupcake.rating = request.json['rating'] or cupcake.rating
+    cupcake.image_url = request.json['image_url'] or cupcake.image_url
+    serialized = cupcake.serialize()
+
+    db.session.commit()
+
+    return (jsonify(cupcake=serialized))
+
+@app.delete('/api/cupcakes/<cupcake_id>')
+def delete_cupcake(cupcake_id):
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+
+    db.session.delete(cupcake)
+    db.session.commit()
+
+    flash(f'{cupcake.flavor} successfully deleted')
+    return {'deleted': [cupcake_id]}
+
