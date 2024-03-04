@@ -56,7 +56,7 @@ def update_cupcake(cupcake_id):
     """Updates cupcake in db and
     returns JSON {"cupcake": {id, flavor, size, ...}}"""
     cupcake = Cupcake.query.get_or_404(cupcake_id)
-
+    # TODO: change all to .get()
     cupcake.flavor = request.json['flavor'] or cupcake.flavor
     cupcake.size = request.json['size'] or cupcake.size
     cupcake.rating = request.json['rating'] or cupcake.rating
