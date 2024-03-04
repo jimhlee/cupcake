@@ -1,7 +1,7 @@
 """Flask app for Cupcakes"""
 import os
 
-from flask import Flask, jsonify, request, flash
+from flask import Flask, jsonify, request, flash, render_template
 # from flask_debugtoolbar import DebugToolbarExtension
 
 from models import connect_db, Cupcake, db
@@ -78,3 +78,7 @@ def delete_cupcake(cupcake_id):
     flash(f'{cupcake.flavor} successfully deleted')
     return jsonify({'deleted': cupcake_id})
 
+@app.get('/')
+def show_homepage():
+
+    return render_template('homepage.html')

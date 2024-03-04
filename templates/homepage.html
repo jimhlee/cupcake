@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cupcakes</title>
+</head>
+<body>
+
+<form action="/api/cupcakes" method="POST">
+   <label for="flavor"> Flavor </label>
+     <input type="text" id="flavor" name="flavor">
+  <label for="size"> Size </label>
+    <input type="text" id="size" name="size">
+  <label for="rating"> Rating </label>
+    <input type="text" id="rating" name="rating">
+  <label for="image_url"> Image URL</label>
+    <input type="text" id="image_url" name="image_url">
+
+  <button>Add Cupcake</button>
+</form>
+<ul id="cupcake-list">
+</ul>
+<script src="http://unpkg.com/jquery"></script>
+<script src="/static/cupcakes.js"></script>
+</body>
+</html>
