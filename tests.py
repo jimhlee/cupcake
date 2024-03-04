@@ -109,16 +109,13 @@ class CupcakeViewsTestCase(TestCase):
 
             self.assertEqual(Cupcake.query.count(), 2)
 
-
     def test_patch_cupcake(self):
         """Test patch cupcake info."""
         with app.test_client() as client:
             url = f"/api/cupcakes/{self.cupcake_id}"
             resp = client.patch(url, json={
-                        "flavor": "",
                         "size": "UpdatedSize2",
                         "rating": 5,
-                        "image_url": ""
                         })
 
             self.assertEqual(resp.status_code, 200)
@@ -176,6 +173,8 @@ class CupcakeViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
 
             self.assertEqual(int(resp.json['deleted']), self.cupcake_id)
+            self.assertEqual(Cupcake.query.count(), 0)
+
 
     def test_delete_nonexistent_cupcake(self):
         """Test delete nonexists cupcake. Should get 404."""

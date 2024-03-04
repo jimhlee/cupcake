@@ -56,11 +56,10 @@ def update_cupcake(cupcake_id):
     """Updates cupcake in db and
     returns JSON {"cupcake": {id, flavor, size, ...}}"""
     cupcake = Cupcake.query.get_or_404(cupcake_id)
-    # TODO: change all to .get()
-    cupcake.flavor = request.json['flavor'] or cupcake.flavor
-    cupcake.size = request.json['size'] or cupcake.size
-    cupcake.rating = request.json['rating'] or cupcake.rating
-    cupcake.image_url = request.json['image_url'] or cupcake.image_url
+    cupcake.flavor = request.json.get('flavor') or cupcake.flavor
+    cupcake.size = request.json.get('size') or cupcake.size
+    cupcake.rating = request.json.get('rating') or cupcake.rating
+    cupcake.image_url = request.json.get('image_url') or cupcake.image_url
     serialized = cupcake.serialize()
 
     db.session.commit()
