@@ -85,14 +85,9 @@ def show_homepage():
 
 
 @app.route('/api/cupcakes/search')
-def search_cupcakes(search_term):
-    all_cupcakes = Cupcake.query.all()
-    filtered_cupcakes = []
-
-    for cupcake in all_cupcakes:
-        values = cupcake.values()
-        if search_term in values:
-            filtered_cupcakes.append(cupcake)
+def search_cupcakes():
+    search_term = request.args['searchTerm']
+    filtered_cupcakes = Cupcake.query.filter(Cupcake.flavor.ilike(f'%{search_term}%')).all()
 
     serialized = [c.serialize() for c in filtered_cupcakes]
 

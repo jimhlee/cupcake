@@ -3,10 +3,14 @@
 const $cupcakeList = $('#cupcake-list');
 const $newCupcakeButton = $('#add-cupcake-btn');
 const $cupcakeForm = $('#new-cupcake-form');
-const $searchForm = $('#search_cupcakes')
+const $searchForm = $('#search-cupcakes');
+const $searchCupcakeButton = $('#search-cupcake-btn');
+const $searchCupcakeForm = $('#search-cupcake-form');
 const BASE_URL = '/api/cupcakes';
 
 $newCupcakeButton.on('click', handleNewCupcakeSubmit);
+
+$searchForm.on('change', search_cupcakes);
 
 /** Makes fetch request to add new cupcake to db. Adds new cupcake to DOM. */
 async function handleNewCupcakeSubmit(evt) {
@@ -58,14 +62,28 @@ function appendCupcake(cupcake) {
     </li>`));
 }
 
-async function search_cupcakes() {
-  searchTerm = $searchForm.val()
-  searchParams = new URLSearchParams({searchTerm})
+async function search_cupcakes(evt) {
+  evt.preventDefault();
 
-  const response = await fetch (
-    // TODO: finish this
-    BASE_URL, searchParams
+  const searchTerm = $searchForm.val();
+  console.log('searchTerm=',searchTerm);
+  const searchParams = new URLSearchParams({searchTerm});
+  console.log(searchParams.has('searchTerm'));
+  console.log('searchTerm=', searchParams.get('searchTerm'));
+
+  const response = await fetch(
+    `${BASE_URL}/search?${searchParams}`
   );
+
+  $cupcakeList.empty();
+
+  const cupcakeData = await response.json();
+  for (let c of cupcakeData.cupcakes) {
+    appendCupcake(c);
+  }
+
+  $searchCupcakeForm.trigger('reset');
+
 }
 
 start();
