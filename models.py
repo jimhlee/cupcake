@@ -45,6 +45,8 @@ class Cupcake(db.Model):
         nullable = False
     )
 
+    db.CheckConstraint(rating <= 10)
+
 def connect_db(app):
     """Connect to database."""
 

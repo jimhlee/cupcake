@@ -3,8 +3,8 @@ import os
 
 from flask import Flask, jsonify, request, flash, render_template
 # from flask_debugtoolbar import DebugToolbarExtension
-
 from models import connect_db, Cupcake, db, SQLAlchemy
+from forms import AddCupcakeForm, EditCupcakeForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "I'LL NEVER TELL!!"
@@ -37,34 +37,54 @@ def show_cupcake(cupcake_id):
 def new_cupcake():
     """Creates new cupcake in db and
     returns JSON {"cupcake": {id, flavor, size, ...}}."""
-    cupcake = Cupcake(
-        flavor = request.json['flavor'],
-        size = request.json['size'],
-        rating = request.json['rating'],
-        image_url = request.json.get('image_url') or None
-    )
+    form = AddCupcakeForm()
 
-    db.session.add(cupcake)
-    db.session.commit()
+    if form.validate_on_submit():
+        data = {k: v for k, v in form.data.items() if k != "csrf_token"}
+        new_cupcake = Cupcake(**data)
 
-    serialized = cupcake.serialize()
+        db.session.add(new_cupcake)
+        db.session.commit()
+        flash("Cupcake added.")
 
-    return (jsonify(cupcake=serialized), 201)
+        serialized = new_cupcake.serialize()
+        return (jsonify(cupcake=serialized), 201)
+
+    else:
+        return render_template('homepage.html', form=form)
+    # cupcake = Cupcake(
+    #     flavor = request.json['flavor'],
+    #     size = request.json['size'],
+    #     rating = request.json['rating'],
+    #     image_url = request.json.get('image_url') or None
+    # )
+
+    # db.session.add(cupcake)
+    # db.session.commit()
+
+
 
 @app.patch('/api/cupcakes/<int:cupcake_id>')
 def update_cupcake(cupcake_id):
     """Updates cupcake in db and
     returns JSON {"cupcake": {id, flavor, size, ...}}"""
     cupcake = Cupcake.query.get_or_404(cupcake_id)
-    cupcake.flavor = request.json.get('flavor') or cupcake.flavor
-    cupcake.size = request.json.get('size') or cupcake.size
-    cupcake.rating = request.json.get('rating') or cupcake.rating
-    cupcake.image_url = request.json.get('image_url') or cupcake.image_url or None
-    serialized = cupcake.serialize()
+    form = EditCupcakeForm(obj=cupcake)
+    if form.validate_on_submit():
+        serialized = cupcake.serialize()
 
-    db.session.commit()
+        db.session.commit()
+        return (jsonify(cupcake=serialized))
 
-    return (jsonify(cupcake=serialized))
+    else:
+        return render_template('homepage.html', form=form)
+    # cupcake.flavor = request.json.get('flavor') or cupcake.flavor
+    # cupcake.size = request.json.get('size') or cupcake.size
+    # cupcake.rating = request.json.get('rating') or cupcake.rating
+    # cupcake.image_url = request.json.get('image_url') or cupcake.image_url or None
+
+
+
 
 @app.delete('/api/cupcakes/<cupcake_id>')
 def delete_cupcake(cupcake_id):

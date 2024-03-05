@@ -5,3 +5,4 @@ ipython
 psycopg2-binary
 sqlalchemy
 python-dotenv
+Flask-WTF

@@ -13,18 +13,15 @@
   <button id="search-cupcake-btn">Search</button>
 </form>
 
-<form action="/api/cupcakes" method="POST" id="new-cupcake-form">
-   <label for="flavor"> Flavor </label>
-     <input type="text" id="flavor" name="flavor">
-  <label for="size"> Size </label>
-    <input type="text" id="size" name="size">
-  <label for="rating"> Rating </label>
-    <input type="text" id="rating" name="rating">
-  <label for="image_url"> Image URL</label>
-    <input type="text" id="image_url" name="image_url">
+{% for msg in get_flashed_messages() %}
+  <div class="alert alert-info">{{ msg }}</div>
+{% endfor %}
+
+{% block content %}
+{% endblock %}
 
   <button id="add-cupcake-btn">Add Cupcake</button>
-</form>
+<!-- </form> -->
 <ul id="cupcake-list">
 </ul>
 <script src="http://unpkg.com/jquery"></script>
