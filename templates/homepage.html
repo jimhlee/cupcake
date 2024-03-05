@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<form action="/api/cupcakes" method="POST">
+<form action="/api/cupcakes" method="POST" id="new-cupcake-form">
    <label for="flavor"> Flavor </label>
      <input type="text" id="flavor" name="flavor">
   <label for="size"> Size </label>
@@ -17,7 +17,7 @@
   <label for="image_url"> Image URL</label>
     <input type="text" id="image_url" name="image_url">
 
-  <button>Add Cupcake</button>
+  <button id="add-cupcake-btn">Add Cupcake</button>
 </form>
 <ul id="cupcake-list">
 </ul>

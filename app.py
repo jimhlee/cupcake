@@ -59,7 +59,7 @@ def update_cupcake(cupcake_id):
     cupcake.flavor = request.json.get('flavor') or cupcake.flavor
     cupcake.size = request.json.get('size') or cupcake.size
     cupcake.rating = request.json.get('rating') or cupcake.rating
-    cupcake.image_url = request.json.get('image_url') or cupcake.image_url
+    cupcake.image_url = request.json.get('image_url') or cupcake.image_url or None
     serialized = cupcake.serialize()
 
     db.session.commit()
@@ -80,5 +80,5 @@ def delete_cupcake(cupcake_id):
 
 @app.get('/')
 def show_homepage():
-
+    """Returns HTML for home page."""
     return render_template('homepage.html')
