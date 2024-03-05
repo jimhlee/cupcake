@@ -84,6 +84,8 @@ class CupcakeViewsTestCase(TestCase):
                 }
             })
 
+
+
     def test_create_cupcake(self):
         """Test create cupcake."""
         with app.test_client() as client:

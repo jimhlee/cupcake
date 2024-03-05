@@ -3,6 +3,7 @@
 const $cupcakeList = $('#cupcake-list');
 const $newCupcakeButton = $('#add-cupcake-btn');
 const $cupcakeForm = $('#new-cupcake-form');
+const $searchForm = $('#search_cupcakes')
 const BASE_URL = '/api/cupcakes';
 
 $newCupcakeButton.on('click', handleNewCupcakeSubmit);
@@ -55,6 +56,16 @@ function appendCupcake(cupcake) {
     Rating: ${cupcake.rating}
     <img src="${cupcake.image_url}" alt="Photo of a ${cupcake.flavor} cupcake">
     </li>`));
+}
+
+async function search_cupcakes() {
+  searchTerm = $searchForm.val()
+  searchParams = new URLSearchParams({searchTerm})
+
+  const response = await fetch (
+    // TODO: finish this
+    BASE_URL, searchParams
+  );
 }
 
 start();

@@ -4,7 +4,7 @@ import os
 from flask import Flask, jsonify, request, flash, render_template
 # from flask_debugtoolbar import DebugToolbarExtension
 
-from models import connect_db, Cupcake, db
+from models import connect_db, Cupcake, db, SQLAlchemy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "I'LL NEVER TELL!!"
@@ -82,3 +82,18 @@ def delete_cupcake(cupcake_id):
 def show_homepage():
     """Returns HTML for home page."""
     return render_template('homepage.html')
+
+
+@app.route('/api/cupcakes/search')
+def search_cupcakes(search_term):
+    all_cupcakes = Cupcake.query.all()
+    filtered_cupcakes = []
+
+    for cupcake in all_cupcakes:
+        values = cupcake.values()
+        if search_term in values:
+            filtered_cupcakes.append(cupcake)
+
+    serialized = [c.serialize() for c in filtered_cupcakes]
+
+    return jsonify(cupcakes=serialized)
